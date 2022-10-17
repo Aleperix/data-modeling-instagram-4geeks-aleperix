@@ -18,12 +18,12 @@ class Users(Base):
     firstname = Column(String(250), nullable=False)
     lastname = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
-    posts = relationship('Posts')
-    comments = relationship('Comments')
-    followers = relationship('Followers')
-    posts_likes = relationship('Posts_Likes')
-    comments_likes = relationship('Comments_Likes')
-    posts_saves = relationship('Posts_Saves')
+    posts = relationship('Posts', backref='users', lazy=True)
+    comments = relationship('Comments', backref='users', lazy=True)
+    followers = relationship('Followers', backref='users', lazy=True)
+    posts_likes = relationship('Posts_Likes', backref='users', lazy=True)
+    comments_likes = relationship('Comments_Likes', backref='users', lazy=True)
+    posts_saves = relationship('Posts_Saves', backref='users', lazy=True)
 
 class Posts(Base):
     __tablename__ = 'posts'
@@ -33,10 +33,10 @@ class Posts(Base):
     image = Column(String(250), nullable=False)
     description = Column(String(250), nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
-    comments = relationship('Comments')
-    media = relationship('Media')
-    posts_likes = relationship('Posts_Likes')
-    posts_saves = relationship('Posts_Saves')
+    comments = relationship('Comments', backref='posts', lazy=True)
+    media = relationship('Media', backref='posts', lazy=True)
+    posts_likes = relationship('Posts_Likes', backref='posts', lazy=True)
+    posts_saves = relationship('Posts_Saves', backref='posts', lazy=True)
 
 class Comments(Base):
     __tablename__ = 'comments'
@@ -46,7 +46,7 @@ class Comments(Base):
     comment_text = Column(String(250), nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
     post_id = Column(Integer, ForeignKey('posts.id'))
-    comments_likes = relationship('Comments_Likes')
+    comments_likes = relationship('Comments_Likes', backref='comments', lazy=True)
 
 class Media(Base):
     __tablename__ = 'media'
